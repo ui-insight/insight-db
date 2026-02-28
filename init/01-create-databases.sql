@@ -6,11 +6,14 @@
 -- OpenERA (Research Administration)
 CREATE USER openera WITH PASSWORD 'openera_change_me';
 CREATE DATABASE openera OWNER openera;
+CREATE DATABASE openera_dev OWNER openera;
 
 -- UCM Daily Register (Communications)
 CREATE USER ucm WITH PASSWORD 'ucm_change_me';
 CREATE DATABASE ucm_newsletter OWNER ucm;
+CREATE DATABASE ucm_newsletter_dev OWNER ucm;
 
 -- Audit Dashboard (Internal Audit)
 CREATE USER audit_user WITH PASSWORD 'audit_change_me';
 CREATE DATABASE audit_dashboard OWNER audit_user;
+CREATE DATABASE audit_dashboard_dev OWNER audit_user;
