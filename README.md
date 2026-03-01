@@ -22,11 +22,16 @@ docker compose up -d
 
 ## Databases
 
-| Database | User | Application |
-|---|---|---|
-| `openera` | `openera` | OpenERA |
-| `ucm_newsletter` | `ucm` | UCM Daily Register |
-| `audit_dashboard` | `audit_user` | Audit Dashboard |
+Each application has a production and development database, both owned by the same user.
+
+| Database | User | Application | Environment |
+|---|---|---|---|
+| `openera` | `openera` | OpenERA | Production |
+| `openera_dev` | `openera` | OpenERA | Development |
+| `ucm_newsletter` | `ucm` | UCM Daily Register | Production |
+| `ucm_newsletter_dev` | `ucm` | UCM Daily Register | Development |
+| `audit_dashboard` | `audit_user` | Audit Dashboard | Production |
+| `audit_dashboard_dev` | `audit_user` | Audit Dashboard | Development |
 
 ## Adding a New Application
 
@@ -54,3 +59,25 @@ postgresql+asyncpg://[USER]:[PASSWORD]@insight-db:5432/[DATABASE]
 ```
 
 The container name is `insight-db`, which Docker DNS resolves on the shared network.
+
+### Connecting an Application
+
+Applications connect by joining the `insight-db-net` external network in their own `docker-compose.yml`:
+
+```yaml
+services:
+  backend:
+    networks:
+      - app-net
+      - insight-db-net
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://openera:${DB_PASSWORD}@insight-db:5432/openera
+
+networks:
+  app-net:
+    driver: bridge
+  insight-db-net:
+    external: true
+```
+
+No database container is needed in the application stack — all apps share this single PostgreSQL instance.
