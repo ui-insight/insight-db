@@ -1,6 +1,6 @@
 # Insight DB — Shared PostgreSQL Instance
 
-Single PostgreSQL 16 container serving all UI Insight applications on the shared VM. Each application gets its own database and credentials.
+Single PostgreSQL 16 container serving UI Insight applications on the shared VM. Each application gets its own database and credentials.
 
 ## Prerequisites
 
@@ -20,9 +20,9 @@ cp .env.example .env
 docker compose up -d
 ```
 
-## Databases
+## Databases (Bootstrapped by Default)
 
-Each application has a production and development database, both owned by the same user.
+The default init script creates production and development databases for OpenERA, UCM Daily Register, and Audit Dashboard.
 
 | Database | User | Application | Environment |
 |---|---|---|---|
@@ -33,14 +33,30 @@ Each application has a production and development database, both owned by the sa
 | `audit_dashboard` | `audit_user` | Audit Dashboard | Production |
 | `audit_dashboard_dev` | `audit_user` | Audit Dashboard | Development |
 
+## StratPlan Tactics (Optional `insight_db` Runtime)
+
+`StratPlanTacticsMB` supports `DATA_SOURCE=insight_db` mode and can use this shared Postgres instance.
+A StratPlan database is not bootstrapped by default; create it when enabling DB-backed runtime:
+
+```bash
+docker compose exec postgres psql -U postgres -c "CREATE USER stratplan WITH PASSWORD 'stratplan_change_me';"
+docker compose exec postgres psql -U postgres -c "CREATE DATABASE stratplan OWNER stratplan;"
+docker compose exec postgres psql -U postgres -c "CREATE DATABASE stratplan_dev OWNER stratplan;"
+```
+
+Example app settings:
+
+- `DATA_SOURCE=insight_db`
+- `INSIGHT_DB_HOST=insight-db`
+- `INSIGHT_DB_PORT=5432`
+- `INSIGHT_DB_NAME=stratplan`
+- `INSIGHT_DB_USER=stratplan`
+- `INSIGHT_DB_PASSWORD=<password>`
+
 ## Adding a New Application
 
-1. Add `CREATE USER` and `CREATE DATABASE` to `init/01-create-databases.sql`
-2. If the container already has data, run the statements manually:
-   ```bash
-   docker compose exec postgres psql -U postgres -c "CREATE USER myapp WITH PASSWORD 'secret';"
-   docker compose exec postgres psql -U postgres -c "CREATE DATABASE myapp OWNER myapp;"
-   ```
+1. Add `CREATE USER` and `CREATE DATABASE` statements to `init/01-create-databases.sql`
+2. If the container already has data, run the statements manually via `docker compose exec postgres psql ...`
 3. In the new app's `docker-compose.yml`, add `insight-db-net` as an external network on the backend service
 
 ## Backups
@@ -80,4 +96,4 @@ networks:
     external: true
 ```
 
-No database container is needed in the application stack — all apps share this single PostgreSQL instance.
+No database container is needed in each application stack — all apps share this single PostgreSQL instance.
