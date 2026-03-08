@@ -22,7 +22,7 @@ docker compose up -d
 
 ## Databases (Bootstrapped by Default)
 
-The default init script creates production and development databases for OpenERA, UCM Daily Register, and Audit Dashboard.
+The default init script creates production and development databases for OpenERA, UCM Daily Register, Audit Dashboard, and ProcessMapping.
 
 | Database | User | Application | Environment |
 |---|---|---|---|
@@ -32,6 +32,8 @@ The default init script creates production and development databases for OpenERA
 | `ucm_newsletter_dev` | `ucm` | UCM Daily Register | Development |
 | `audit_dashboard` | `audit_user` | Audit Dashboard | Production |
 | `audit_dashboard_dev` | `audit_user` | Audit Dashboard | Development |
+| `processmapping` | `processmapping` | ProcessMapping | Production |
+| `processmapping_dev` | `processmapping` | ProcessMapping | Development |
 
 ## StratPlan Tactics (Optional `insight_db` Runtime)
 

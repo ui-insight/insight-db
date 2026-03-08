@@ -4,7 +4,7 @@
 -- (or run the statements manually via psql).
 
 -- OpenERA (Research Administration)
-CREATE USER openera WITH PASSWORD 'openera_change_me';
+CREATE USER openera WITH PASSWORD 'openera_dev';
 CREATE DATABASE openera OWNER openera;
 CREATE DATABASE openera_dev OWNER openera;
 
@@ -17,3 +17,8 @@ CREATE DATABASE ucm_newsletter_dev OWNER ucm;
 CREATE USER audit_user WITH PASSWORD 'audit_change_me';
 CREATE DATABASE audit_dashboard OWNER audit_user;
 CREATE DATABASE audit_dashboard_dev OWNER audit_user;
+
+-- ProcessMapping (Research Administration)
+CREATE USER processmapping WITH PASSWORD 'processmapping_dev';
+CREATE DATABASE processmapping OWNER processmapping;
+CREATE DATABASE processmapping_dev OWNER processmapping;
