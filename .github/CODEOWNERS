@@ -1,0 +1,20 @@
+# insight-db ownership
+#
+# This repository is intentionally small, so ownership is defined by operational
+# surface area rather than by app module.
+
+* @ui-insight
+
+# Sensitive infrastructure and operational files
+/.github/ @ui-insight
+/docker-compose.yml @ui-insight
+/backup.sh @ui-insight
+/.env.example @ui-insight
+/init/ @ui-insight
+
+# Repository policy and governance
+/README.md @ui-insight
+/GOVERNANCE.md @ui-insight
+/CONTRIBUTING.md @ui-insight
+/SECURITY.md @ui-insight
+/CODE_OF_CONDUCT.md @ui-insight
